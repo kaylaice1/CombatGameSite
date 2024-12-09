@@ -20,12 +20,6 @@ namespace CombatGameSite.Controllers
             // Fetch all teams from the database
             var teams = _context.Teams.Include(t => t.Characters).ToList();
 
-            // Check if the teams list is empty or null
-            if (teams == null || !teams.Any())
-            {
-                return View("Error"); // Render error view if no teams are available
-            }
-
             return View(teams); // Pass the teams list to the view
         }
     }
