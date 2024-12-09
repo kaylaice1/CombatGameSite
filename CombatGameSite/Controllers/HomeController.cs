@@ -1,26 +1,29 @@
 using CombatGameSite.Data;
 using CombatGameSite.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore; // Add this for Include method
 
-namespace CombatGameSite.Controllers
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+    private readonly CombatGameDbContext _context;
+
+    public HomeController(CombatGameDbContext context)
     {
-        private readonly CombatGameDbContext _context;
+        _context = context;
+    }
 
-        public HomeController(CombatGameDbContext context)
+    public IActionResult Index()
+    {
+        var model = new HomeViewModel
         {
-            _context = context;
-        }
+            Teams = _context.Teams.Include(t => t.Characters).ToList(),
+            Battles = _context.Battles
+                                .Include(b => b.Team1)
+                                .Include(b => b.Team2)
+                                .Include(b => b.WinningTeam)
+                                .ToList()
+        };
 
-        // GET: Home/Index
-        public IActionResult Index()
-        {
-            // Fetch all teams from the database
-            var teams = _context.Teams.Include(t => t.Characters).ToList();
-
-            return View(teams); // Pass the teams list to the view
-        }
+        return View(model);
     }
 }

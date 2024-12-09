@@ -15,9 +15,9 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<CombatGameDbContext>();
-    context.Database.Migrate(); 
+    context.Database.Migrate();
 
-    CombatGameDbContext.Initialize(scope.ServiceProvider, context); 
+    CombatGameDbContext.Initialize(scope.ServiceProvider, context);
 }
 
 app.UseStaticFiles();

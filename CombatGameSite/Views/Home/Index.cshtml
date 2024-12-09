@@ -1,41 +1,48 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model CombatGameSite.Models.HomeViewModel
+
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1>Welcome to CombatGameSite</h1>
-    <p>Create and battle with your custom teams!</p>
-</div>
+<h2>Teams</h2>
 
-<h1>Battle Teams</h1>
-
-@if (TempData["Message"] !=null)
+@if (Model.Teams == null || !Model.Teams.Any())
 {
-    <p class="alert alert-success">@TempData["Message"]</p>
+    <p>No teams available.</p>
+}
+else
+{
+    <p>Teams count: @Model.Teams.Count</p>
 }
 
-<form asp-action="Index" method="post">
-    <div class="form-group">
-        <label for="team1Id">Select Team 1</label>
-        <select id="team1Id" name="team1Id" class="form-control">
-            <option value="">-- Select Team 1 --</option>
-            @foreach (var team in(IEnumerable<Team>)ViewBag.Teams)
-            {
-                <option value="@team.Id">@team.Name</option>
-            }
-        </select>
-    </div>
+<hr />
 
-    <div class="form-group">
-        <label for="team2Id">Select Team 2</label>
-        <select id="team2Id" name="team2Id" class="form-control">
-            <option value="">-- Select Team 2 --</option>
-            @foreach (var team in (IEnumerable<Team>)ViewBag.Teams)
+<h2>Battle History</h2>
+@if (Model.Battles != null && Model.Battles.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Team 1</th>
+                <th>Team 2</th>
+                <th>Winning Team</th>
+                <th>Battle Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var battle in Model.Battles)
             {
-                <option value="@team.Id">@team.Name</option>
+                <tr>
+                    <td>@battle.Team1.Name</td>
+                    <td>@battle.Team2.Name</td>
+                    <td>@battle.WinningTeam?.Name</td>
+                    <td>@battle.BattleDate.ToString("yyyy-MM-dd HH:mm")</td>
+                </tr>
             }
-        </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Battle</button>
-</form>
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No battle history available.</p>
+}

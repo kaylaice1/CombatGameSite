@@ -6,7 +6,6 @@
     <title>@ViewData["Title"] - CombatGameSite</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/CombatGameSite.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -27,9 +26,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" href="/Character/Create">Create Character</a>
                         </li>
-                    </ul>
-                    <ul>
-                        <li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" href="/Team/Create">Create Team</a>
                         </li>
                     </ul>
@@ -51,6 +48,5 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

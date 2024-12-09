@@ -20,20 +20,16 @@ namespace CombatGameSite.Controllers
         {
             var characters = _context.Characters.Include(c => c.Team).ToList();
 
-            if (characters == null || !characters.Any())
-            {
-                return View("Error"); // Render error view if no characters exist
-            }
-
-            return View(characters); // Pass the characters to the view
+            // Pass characters list to view using ViewBag
+            ViewBag.Characters = characters;
+            return View();
         }
 
         // GET: Character/Create
         public IActionResult Create()
         {
-            var teams = _context.Teams.ToList();
-            ViewBag.Teams = new SelectList(teams, "Id", "Name");
-
+            // Fetch teams to display in the dropdown
+            ViewBag.Teams = new SelectList(_context.Teams, "Id", "Name");
             return View();
         }
 
@@ -46,12 +42,12 @@ namespace CombatGameSite.Controllers
             {
                 _context.Add(character);
                 _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
 
-            var teams = _context.Teams.ToList();
-            ViewBag.Teams = new SelectList(teams, "Id", "Name");
-            return View(character); // Return to the Create view if there are validation errors
+            // In case of validation errors, re-populate teams
+            ViewBag.Teams = new SelectList(_context.Teams, "Id", "Name");
+            return View(character);
         }
     }
 }

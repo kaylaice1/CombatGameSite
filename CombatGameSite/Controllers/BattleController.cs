@@ -23,20 +23,16 @@ namespace CombatGameSite.Controllers
                 .Include(b => b.Team2)
                 .ToList();
 
-            if (battles == null || !battles.Any())
-            {
-                return View("Error"); // Render error view if no battles exist
-            }
-
-            return View(battles); // Pass the battles to the view
+            // Pass battles to the view using ViewBag
+            ViewBag.Battles = battles;
+            return View();
         }
 
         // GET: Battle/Create
         public IActionResult Create()
         {
-            var teams = _context.Teams.ToList();
-            ViewBag.Teams = new SelectList(teams, "Id", "Name");
-
+            // Fetch teams to display in the dropdown
+            ViewBag.Teams = new SelectList(_context.Teams, "Id", "Name");
             return View();
         }
 
@@ -52,9 +48,8 @@ namespace CombatGameSite.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            // If validation fails, return to the Create view with teams again
-            var teams = _context.Teams.ToList();
-            ViewBag.Teams = new SelectList(teams, "Id", "Name");
+            // Re-populate teams in case of validation failure
+            ViewBag.Teams = new SelectList(_context.Teams, "Id", "Name");
             return View(battle);
         }
     }
