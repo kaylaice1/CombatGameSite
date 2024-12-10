@@ -1,0 +1,12 @@
+﻿@model Battle
+
+<h2>Battle Result</h2>
+
+<div class="battle-result">
+    <p><strong>Team 1:</strong> @Model.Team1.Name</p>
+    <p><strong>Team 2:</strong> @Model.Team2.Name</p>
+    <p><strong>Winner:</strong> @Model.WinningTeam?.Name</p>
+    <p><strong>Date:</strong> @Model.BattleDate.ToString("yyyy-MM-dd HH:mm")</p>
+</div>
+
+<a href="@Url.Action("Index", "Home")" class="btn btn-primary mt-3">Back to Home</a>

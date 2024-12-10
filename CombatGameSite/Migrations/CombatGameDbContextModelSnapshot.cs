@@ -50,9 +50,6 @@ namespace CombatGameSite.Migrations
                     b.Property<int?>("TeamId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TotalPoints")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("TeamId");

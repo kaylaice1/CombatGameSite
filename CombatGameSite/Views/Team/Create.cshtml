@@ -1,41 +1,36 @@
 ﻿@model Team
 
 @{
-    ViewData["Title"] = "Create Team";
+    ViewBag.Title = "Create Team";
 }
 
 <h2>Create a New Team</h2>
 
 <form method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <!-- Team Name Field -->
     <div class="form-group">
         <label for="name">Team Name:</label>
         <input type="text" class="form-control" id="name" name="name" value="@Model.Name" />
     </div>
 
-    <!-- User Selection Dropdown -->
-    <div class="form-group">
-        <label for="userId">User:</label>
-        <select class="form-control" id="userId" name="userId">
-            @foreach (var user in ViewBag.Users as List<User>)
-            {
-                <option value="@user.Id">@user.Username</option>
-            }
-        </select>
-    </div>
-
-    <!-- Characters Selection Dropdown -->
     <div class="form-group">
         <label for="characters">Characters:</label>
-        <select class="form-control" multiple id="characters" name="characterIds">
+        @if (ViewBag.Characters != null && ViewBag.Characters.Count > 0)
+        {
             @foreach (var character in ViewBag.Characters as List<Character>)
             {
-                <option value="@character.Id">@character.Name</option>
+                <div>
+                    <input type="checkbox" name="characterIds" value="@character.Id" />
+                    @character.Name (Strength: @character.Strength, Agility: @character.Agility, Intelligence: @character.Intelligence)
+                </div>
             }
-        </select>
+        }
+        else
+        {
+            <p class="text-danger">No characters are available to create a team. Please add characters first.</p>
+        }
     </div>
 
-    <!-- Submit Button -->
-    <button type="submit" class="btn btn-primary">Create Team</button>
+    <button type="submit" class="btn btn-primary" @(ViewBag.Characters == null || ViewBag.Characters.Count == 0 ? "disabled" : "")>Create Team</button>
 </form>

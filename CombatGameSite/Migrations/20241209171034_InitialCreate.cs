@@ -84,7 +84,6 @@ namespace CombatGameSite.Migrations
                     Strength = table.Column<int>(type: "int", nullable: false),
                     Agility = table.Column<int>(type: "int", nullable: false),
                     Intelligence = table.Column<int>(type: "int", nullable: false),
-                    TotalPoints = table.Column<int>(type: "int", nullable: false),
                     SpecialMove = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     TeamId = table.Column<int>(type: "int", nullable: true)
                 },

@@ -14,16 +14,17 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        var model = new HomeViewModel
+        var viewModel = new HomeViewModel
         {
-            Teams = _context.Teams.Include(t => t.Characters).ToList(),
+            Teams = _context.Teams.ToList(),
             Battles = _context.Battles
-                                .Include(b => b.Team1)
-                                .Include(b => b.Team2)
-                                .Include(b => b.WinningTeam)
-                                .ToList()
+                            .Include(b => b.Team1)
+                            .Include(b => b.Team2)
+                            .Include(b => b.WinningTeam)
+                            .OrderByDescending(b => b.BattleDate)
+                            .ToList()
         };
 
-        return View(model);
+        return View(viewModel);
     }
 }

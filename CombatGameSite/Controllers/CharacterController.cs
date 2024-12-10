@@ -2,52 +2,45 @@
 using CombatGameSite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
-namespace CombatGameSite.Controllers
+namespace CombatGameSite.Controllers;
+
+public class CharacterController(CombatGameDbContext context) : Controller
 {
-    public class CharacterController : Controller
+    private readonly CombatGameDbContext _context = context;
+
+    // GET: Character/Create
+    [HttpGet]
+    public IActionResult Create()
     {
-        private readonly CombatGameDbContext _context;
+        // Fetch teams to display in the dropdown
+        ViewBag.Teams = new SelectList(_context.Teams, "Id", "Name");
+        return View(new Character());
+    }
 
-        public CharacterController(CombatGameDbContext context)
+    // POST: Character/Create
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Create(Character character)
+    {
+        if (ModelState.IsValid)
         {
-            _context = context;
-        }
-
-        // GET: Character/Index
-        public IActionResult Index()
-        {
-            var characters = _context.Characters.Include(c => c.Team).ToList();
-
-            // Pass characters list to view using ViewBag
-            ViewBag.Characters = characters;
-            return View();
-        }
-
-        // GET: Character/Create
-        public IActionResult Create()
-        {
-            // Fetch teams to display in the dropdown
-            ViewBag.Teams = new SelectList(_context.Teams, "Id", "Name");
-            return View();
-        }
-
-        // POST: Character/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(Character character)
-        {
-            if (ModelState.IsValid)
+            // Set default value for TotalPoints if not provided
+            if (character.TotalPoints == 0)
             {
-                _context.Add(character);
-                _context.SaveChanges();
-                return RedirectToAction("Index", "Home");
+                character.TotalPoints = character.Strength + character.Agility + character.Intelligence;
             }
 
-            // In case of validation errors, re-populate teams
-            ViewBag.Teams = new SelectList(_context.Teams, "Id", "Name");
-            return View(character);
+            _context.Characters.Add(character);
+            _context.SaveChanges();
+
+            // Add a success message
+            TempData["SuccessMessage"] = "Character created successfully!";
+
+            return RedirectToAction("Index", "Home");
         }
+
+        // If we got this far, something failed, redisplay form
+        return View(character);
     }
 }
