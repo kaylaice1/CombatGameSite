@@ -1,4 +1,4 @@
-﻿@model CombatGameSite.Models.Team
+﻿@model Team
 
 @{
     ViewData["Title"] = "Create Team";
@@ -7,7 +7,6 @@
 <h2>Create a New Team</h2>
 
 <form method="post">
-    @csrf
 
     <!-- Team Name Field -->
     <div class="form-group">
@@ -19,7 +18,7 @@
     <div class="form-group">
         <label for="userId">User:</label>
         <select class="form-control" id="userId" name="userId">
-            @foreach (var user in ViewBag.Users as List<CombatGameSite.Models.User>)
+            @foreach (var user in ViewBag.Users as List<User>)
             {
                 <option value="@user.Id">@user.Username</option>
             }
@@ -30,7 +29,7 @@
     <div class="form-group">
         <label for="characters">Characters:</label>
         <select class="form-control" multiple id="characters" name="characterIds">
-            @foreach (var character in ViewBag.Characters as List<CombatGameSite.Models.Character>)
+            @foreach (var character in ViewBag.Characters as List<Character>)
             {
                 <option value="@character.Id">@character.Name</option>
             }

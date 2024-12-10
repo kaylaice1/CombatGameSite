@@ -1,4 +1,4 @@
-﻿using CombatGameSite.Models;
+﻿namespace CombatGameSite.Models;
 
 public class Battle
 {
